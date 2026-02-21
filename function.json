@@ -1,0 +1,96 @@
+{
+  "type": "vector.function",
+  "output_length": {
+    "$starlark": "len(input)"
+  },
+  "input_split": {
+    "$starlark": "[[item] for item in input]"
+  },
+  "input_merge": {
+    "$starlark": "[item for sublist in input for item in sublist]"
+  },
+  "input_schema": {
+    "type": "array",
+    "description": "A collection of cat pictures to rank by the specificity of the moment captured in each image.",
+    "minItems": 2,
+    "items": {
+      "type": "image",
+      "description": "A photograph of a cat to evaluate for narrative tension, personality revelation, and emotional specificity."
+    }
+  },
+  "tasks": [
+    {
+      "type": "vector.completion",
+      "skip": null,
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Show me a picture of a cat that is clearly in the middle of something — caught in an action where I can tell what just happened and what is about to happen next. I want to feel like I am watching a scene unfold, not looking at a cat that is just sitting there. The more it feels like a frozen moment in a story, the better."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[item] for item in input]"
+      },
+      "output": {
+        "$starlark": "output[\"scores\"]"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "skip": null,
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are a cat photo curator who specializes in finding images that reveal the unique personality and individual character of specific cats. You look for images where the cat is not interchangeable — where the picture is about a disposition, not just a position. You favor images that show you who is in the frame, not merely what."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Find me a cat picture where this specific cat's personality shines through so clearly that you feel like you know them — their attitude, their quirks, their whole way of being. I do not want a generic cat in a generic pose. I want to see an individual."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[item] for item in input]"
+      },
+      "output": {
+        "$starlark": "output[\"scores\"]"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "skip": null,
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "I need to send a cat picture to my friend that will actually make them react. Not just a generic cute cat that gets a polite like — I need one that makes them laugh out loud at something specific, or gasp because they can see exactly what is about to go wrong, or immediately reply with that is EXACTLY what my cat does. Which picture would hit the hardest and make them feel something specific enough to want to share it with someone else?"
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[item] for item in input]"
+      },
+      "output": {
+        "$starlark": "output[\"scores\"]"
+      }
+    }
+  ],
+  "description": "Ranks cat pictures by how much each captures a specific, unrepeatable moment versus a generic snapshot. Evaluates narrative tension, personality revelation, and emotional specificity to surface images where something is happening, individual character shines through, and the viewer feels something precise enough to share."
+}
